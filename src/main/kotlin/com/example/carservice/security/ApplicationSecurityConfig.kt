@@ -13,6 +13,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @Configuration
 @EnableWebSecurity
@@ -21,6 +24,8 @@ class ApplicationSecurityConfig(private val passwordEncoder: PasswordEncoder, pr
     override fun configure(http: HttpSecurity) {
         http
                 .csrf().disable()
+                .cors()
+                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilter(JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig))
@@ -38,6 +43,15 @@ class ApplicationSecurityConfig(private val passwordEncoder: PasswordEncoder, pr
 
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.authenticationProvider(daoAuthProvider())
+    }
+
+    @Bean
+    fun corsConfigurationSource(): CorsConfigurationSource? {
+        val source = UrlBasedCorsConfigurationSource()
+        val corsConfiguration = CorsConfiguration()
+        corsConfiguration.addExposedHeader("Authorization")
+        source.registerCorsConfiguration("/**", corsConfiguration.applyPermitDefaultValues())
+        return source
     }
 
     @Bean

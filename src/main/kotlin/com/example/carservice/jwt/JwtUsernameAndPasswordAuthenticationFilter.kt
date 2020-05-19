@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse
 
 class JwtUsernameAndPasswordAuthenticationFilter : UsernamePasswordAuthenticationFilter {
 
-    private var jwtConfig: JwtConfig;
+    private var jwtConfig: JwtConfig
 
     constructor(authenticationManager: AuthenticationManager, jwtConfig: JwtConfig) : super() {
         this.authenticationManager = authenticationManager
