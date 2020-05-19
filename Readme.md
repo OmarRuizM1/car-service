@@ -11,6 +11,7 @@
 ### Technology References:
 * Kotlin & Java language
 * Restful Services (REST)
+* Docker
 * Spring Security 
 * Tokens (JWT)
 * Java Persistence Api (JPA)
